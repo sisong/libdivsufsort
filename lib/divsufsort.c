@@ -141,22 +141,23 @@ note:
       }
     }
 #endif
-
     /* Compute ranks of type B* substrings. */
     for(i = m - 1; 0 <= i; --i) {
       if(0 <= SA[i]) {
         j = i;
-        do { ISAb[SA[i]] = i; } while((0 <= --i) && (0 <= SA[i]));
-        SA[i + 1] = i - j;
+        do { ISAb[SA[i]] = i; SA[i] = ~SA[i];} while((0 <= --i) && (0 <= SA[i]));
         if(i <= 0) { break; }
       }
       j = i;
+      k = i;
+      while(SA[--j] < 0);
       do { ISAb[SA[i] = ~SA[i]] = j; } while(SA[--i] < 0);
       ISAb[SA[i]] = j;
+      SA[k] = ~SA[k];
     }
 
-    /* Construct the inverse suffix array of type B* suffixes using trsort. */
-    trsort(ISAb, SA, m, 1);
+    /* Construct the inverse suffix array of type B* suffixes using spsort. */
+    spsort(ISAb, SA, ISAb + m, m, n - 2 * m);
 
     /* Set the sorted order of tyoe B* suffixes. */
     for(i = n - 1, j = m, c0 = T[n - 1]; 0 <= i;) {
