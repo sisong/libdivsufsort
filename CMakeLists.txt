@@ -4,7 +4,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
 include(AppendCompilerFlags)
 
 ## Project information ##
-project(libdivsufsort C)
+project(libdivsufsort)
 set(PROJECT_VENDOR "Yuta Mori")
 set(PROJECT_CONTACT "yuta.256@gmail.com")
 set(PROJECT_URL "https://github.com/y-256/libdivsufsort")
