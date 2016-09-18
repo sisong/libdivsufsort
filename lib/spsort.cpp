@@ -4,7 +4,7 @@
 #include "divsufsort_private.h"
 
 static inline void sort_(int32_t* SA, int32_t* ISA, int32_t* PA, int64_t gidx, int64_t N) {
-  if (N < 2) __builtin_unreachable();
+  //if (N < 2) __builtin_unreachable();
   auto* tmp = reinterpret_cast<std::tuple<int64_t, int32_t>*>(PA);
 
   for (int64_t i = 0; i < N; ++i) {
@@ -39,8 +39,8 @@ static inline void sort_(int32_t* SA, int32_t* ISA, int32_t* PA, int64_t gidx, i
 
 template<int M>
 static inline void sort(int32_t* SA, int32_t* ISA, int64_t gidx, int64_t N) {
-  if (N < 2) __builtin_unreachable();
-  if (M < N) __builtin_unreachable();
+  //if (N < 2) __builtin_unreachable();
+  //if (M < N) __builtin_unreachable();
   std::array<int64_t, M> tmp;
 
   if (M <= 16) {
