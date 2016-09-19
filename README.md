@@ -3,15 +3,17 @@
 libdivsufsort is a software library that implements a lightweight suffix array construction algorithm.
 
 ## News
+* 2016-09-19: Trsort replaced by Spsort a spreadsort based implementation of radixSA (around 10% faster)
 * 2015-03-21: The project has moved from [Google Code](http://code.google.com/p/libdivsufsort/) to [GitHub](https://github.com/y-256/libdivsufsort)
 
 ## Introduction
 This library provides a simple and an efficient C API to construct a suffix array and a Burrows-Wheeler transformed string from a given string over a constant-size alphabet.
-The algorithm runs in O(n log n) worst-case time using only 5n+O(1) bytes of memory space, where n is the length of
+The algorithm currently runs in O(n * n) worst-case time (repetition detection still missing in this modification) using only 5n+O(1) bytes of memory space, where n is the length of
 the string.
 
 ## Build requirements
-* An ANSI C Compiler (e.g. GNU GCC)
+* An ANSI C / C++ Compiler (e.g. GNU GCC)
+* Boost
 * [CMake](http://www.cmake.org/ "CMake") version 2.4.2 or newer
 * CMake-supported build tool
 
@@ -19,7 +21,7 @@ the string.
 1. Get the source code from GitHub. You can either
     * use git to clone the repository
     ```
-    git clone https://github.com/y-256/libdivsufsort.git
+    git clone https://github.com/akamiru/libdivsufsort.git
     ```
     * or download a [zip file](../../archive/master.zip) directly
 2. Create a `build` directory in the package source directory.
@@ -111,6 +113,8 @@ See the [examples](examples) directory for a few other examples.
 
 ## Benchmarks
 See [Benchmarks](https://github.com/y-256/libdivsufsort/blob/wiki/SACA_Benchmarks.md) page for details.
+Also see http://encode.ru/threads/2602-Even-(somewhat)-faster-Suffix-Sorting for the improvement of this
+modification.
 
 ## License
 libdivsufsort is released under the [MIT license](LICENSE "MIT license").
@@ -138,3 +142,4 @@ libdivsufsort is released under the [MIT license](LICENSE "MIT license").
 
 ## Author
 * Yuta Mori
+* Christoph Diegelmann
