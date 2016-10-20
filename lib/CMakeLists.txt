@@ -1,7 +1,7 @@
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../include"
                     "${CMAKE_CURRENT_BINARY_DIR}/../include")
 
-set(divsufsort_SRCS spsort.cpp divsufsort.c sssort.c utils.c)
+set(divsufsort_SRCS daware.cpp divsufsort.c sssort.c utils.c)
 
 ## libdivsufsort ##
 add_library(divsufsort ${divsufsort_SRCS})
