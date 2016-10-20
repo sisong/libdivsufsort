@@ -196,8 +196,8 @@ sssort(const sauchar_t *Td, const saidx_t *PA,
        saidx_t *buf, saidx_t bufsize,
        saidx_t depth, saidx_t n, saint_t lastsuffix);
 
-/* spsort.cpp */
-void spsort(int32_t* ISA, int32_t* SA, int32_t* PA, int32_t n, int32_t m);
+/* daware.cpp */
+void daware(saidx_t* SAf, saidx_t* SAl, saidx_t* ISAf);
 
 
 #ifdef __cplusplus
