@@ -197,7 +197,7 @@ sssort(const sauchar_t *Td, const saidx_t *PA,
        saidx_t depth, saidx_t n, saint_t lastsuffix);
 
 /* daware.cpp */
-void daware(saidx_t* SAf, saidx_t* SAl, saidx_t* ISAf);
+void daware(saidx_t* SAf, saidx_t* SAl, saidx_t* ISAf, saidx_t* Sf, saidx_t* Sl);
 
 
 #ifdef __cplusplus

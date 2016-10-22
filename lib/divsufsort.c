@@ -156,7 +156,7 @@ note:
     }
 
     /* Construct the inverse suffix array of type B* suffixes using daware. */
-    daware(SA, SA + m, ISAb);
+    daware(SA, SA + m, ISAb, ISAb + m, SA + n);
 
     /* Set the sorted order of type B* suffixes. */
     for(i = n - 1, j = m, c0 = T[n - 1]; 0 <= i;) {
