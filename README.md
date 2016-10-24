@@ -3,17 +3,18 @@
 libdivsufsort is a software library that implements a lightweight suffix array construction algorithm.
 
 ## News
-* 2016-10-20: Spsort replace by Daware a novel linear time SACA (implemented as O(n *log(n)) time)
+* 2016-10-24: Daware currently has a [rare stackoverflow](https://github.com/akamiru/sort/issues/1) issue. Don't use in production.
+* 2016-10-20: Spsort replace by Daware a novel linear time SACA (implemented as O(n * log(n)) time)
 * 2016-09-19: Trsort replaced by Spsort a spreadsort based implementation of radixSA (around 10% faster)
 * 2015-03-21: The project has moved from [Google Code](http://code.google.com/p/libdivsufsort/) to [GitHub](https://github.com/y-256/libdivsufsort)
 
 ## Introduction
 This library provides a simple and an efficient C API to construct a suffix array and a Burrows-Wheeler transformed string from a given string over a constant-size alphabet.
 The algorithm currently runs in O(n * log(n)) worst-case time using only 5n+O(1) bytes of memory space, where n is the length of
-the string. See [daware.h](https://github.com/akamiru/sort/blob/master/daware.h) for more info.
+the string. See [suffix.h](https://github.com/akamiru/sort/blob/master/suffix.h) for more info.
 
 ## Build requirements
-* An ANSI C / C++ Compiler (e.g. GNU GCC)
+* An ANSI C / C++14 Compiler (e.g. GNU GCC)
 * [CMake](http://www.cmake.org/ "CMake") version 2.4.2 or newer
 * CMake-supported build tool
 
@@ -112,7 +113,7 @@ int main() {
 See the [examples](examples) directory for a few other examples.
 
 ## Benchmarks
-See [Benchmarks](https://github.com/y-256/libdivsufsort/blob/wiki/SACA_Benchmarks.md) page for details.
+See [Benchmarks](https://github.com/y-256/libdivsufsort/blob/wiki/SACA_Benchmarks.md) page for details.<br/>
 Also see [Benchmarks in Sort](https://github.com/akamiru/sort) for the improvement of this
 modification.
 
