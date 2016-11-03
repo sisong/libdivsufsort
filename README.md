@@ -3,7 +3,7 @@
 libdivsufsort is a software library that implements a lightweight suffix array construction algorithm.
 
 ## News
-* 2019-10-25: Stackoverflow has been fixed. New version is successfully tested
+* 2016-10-25: Stackoverflow has been fixed. Current version is stable.
 * 2016-10-24: Daware currently has a [rare stackoverflow](https://github.com/akamiru/sort/issues/1) issue. Don't use in production.
 * 2016-10-20: Spsort replace by Daware a novel linear time SACA (implemented as O(n * log(n)) time)
 * 2016-09-19: Trsort replaced by Spsort a spreadsort based implementation of radixSA (around 10% faster)
