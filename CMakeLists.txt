@@ -54,6 +54,8 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif(NOT CMAKE_BUILD_TYPE)
 
 ## Compiler options ##
+add_compile_options("-std=c++14")
+
 if(MSVC)
   append_c_compiler_flags("/W4" "VC" CMAKE_C_FLAGS)
   append_c_compiler_flags("/Oi;/Ot;/Ox;/Oy" "VC" CMAKE_C_FLAGS_RELEASE)
