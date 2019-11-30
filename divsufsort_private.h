@@ -31,6 +31,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#define _IS_USED_DAWARE_SORT 1
+    
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
@@ -76,7 +78,11 @@ extern "C" {
 # define sa_search sa_search64
 # define sa_simplesearch sa_simplesearch64
 # define sssort sssort64
-# define trsort trsort64
+# if (_IS_USED_DAWARE_SORT)
+#   define daware daware64
+# else
+#   define trsort trsort64
+# endif
 #else
 # include "divsufsort.h"
 #endif
@@ -195,9 +201,13 @@ sssort(const sauchar_t *Td, const saidx_t *PA,
        saidx_t *first, saidx_t *last,
        saidx_t *buf, saidx_t bufsize,
        saidx_t depth, saidx_t n, saint_t lastsuffix);
-/* trsort.c */
-void
-trsort(saidx_t *ISA, saidx_t *SA, saidx_t n, saidx_t depth);
+# if (_IS_USED_DAWARE_SORT)
+    /* daware.cpp */
+    void daware(saidx_t* SAf, saidx_t* SAl, saidx_t* ISAf, saidx_t* Sf, saidx_t* Sl);
+# else
+    /* trsort.c */
+    void trsort(saidx_t *ISA, saidx_t *SA, saidx_t n, saidx_t depth);
+# endif
 
 
 #ifdef __cplusplus

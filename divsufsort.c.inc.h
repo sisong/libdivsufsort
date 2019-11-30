@@ -147,16 +147,29 @@ note:
       if(0 <= SA[i]) {
         j = i;
         do { ISAb[SA[i]] = i; } while((0 <= --i) && (0 <= SA[i]));
+# if (_IS_USED_DAWARE_SORT)
+        //no
+# else
         SA[i + 1] = i - j;
+# endif
         if(i <= 0) { break; }
       }
       j = i;
+# if (_IS_USED_DAWARE_SORT)
+      k = i;
+      while(SA[--j] < 0);
+# endif
       do { ISAb[SA[i] = ~SA[i]] = j; } while(SA[--i] < 0);
       ISAb[SA[i]] = j;
     }
 
-    /* Construct the inverse suffix array of type B* suffixes using trsort. */
-    trsort(ISAb, SA, m, 1);
+# if (_IS_USED_DAWARE_SORT)
+      /* Construct the inverse suffix array of type B* suffixes using daware. */
+      daware(SA, SA + m, ISAb, ISAb + m, SA + n);
+# else
+      /* Construct the inverse suffix array of type B* suffixes using trsort. */
+      trsort(ISAb, SA, m, 1);
+# endif
 
     /* Set the sorted order of tyoe B* suffixes. */
     for(i = n - 1, j = m, c0 = T[n - 1]; 0 <= i;) {
