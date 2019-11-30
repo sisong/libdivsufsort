@@ -3,6 +3,7 @@
 libdivsufsort is a software library that implements a lightweight suffix array construction algorithm.
 
 ## News
+* 2016-12-31: remove cmake; supports both 32bit and 64bit APIs at the same time; for [HDiffPatch](https://github.com/sisong/HDiffPatch)
 * 2015-03-21: The project has moved from [Google Code](http://code.google.com/p/libdivsufsort/) to [GitHub](https://github.com/y-256/libdivsufsort)
 
 ## Introduction
