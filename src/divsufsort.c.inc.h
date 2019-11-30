@@ -216,7 +216,7 @@ construct_SA(const sauchar_t *T, saidx_t *SA,
           c0 = T[--s];
           if((0 < s) && (T[s - 1] > c0)) { s = ~s; }
           if(c0 != c2) {
-            if(0 <= c2) { BUCKET_B(c2, c1) = k - SA; }
+            if(0 <= c2) { BUCKET_B(c2, c1) =(saidx_t)(k - SA); }
             k = SA + BUCKET_B(c2 = c0, c1);
           }
           assert(k < j);
@@ -240,7 +240,7 @@ construct_SA(const sauchar_t *T, saidx_t *SA,
       c0 = T[--s];
       if((s == 0) || (T[s - 1] < c0)) { s = ~s; }
       if(c0 != c2) {
-        BUCKET_A(c2) = k - SA;
+        BUCKET_A(c2) = (saidx_t)(k - SA);
         k = SA + BUCKET_A(c2 = c0);
       }
       assert(i < k);
@@ -280,7 +280,7 @@ construct_BWT(const sauchar_t *T, saidx_t *SA,
           *j = ~((saidx_t)c0);
           if((0 < s) && (T[s - 1] > c0)) { s = ~s; }
           if(c0 != c2) {
-            if(0 <= c2) { BUCKET_B(c2, c1) = k - SA; }
+            if(0 <= c2) { BUCKET_B(c2, c1) = (saidx_t)(k - SA); }
             k = SA + BUCKET_B(c2 = c0, c1);
           }
           assert(k < j);
@@ -308,7 +308,7 @@ construct_BWT(const sauchar_t *T, saidx_t *SA,
       *i = c0;
       if((0 < s) && (T[s - 1] < c0)) { s = ~((saidx_t)T[s - 1]); }
       if(c0 != c2) {
-        BUCKET_A(c2) = k - SA;
+        BUCKET_A(c2) = (saidx_t)(k - SA);
         k = SA + BUCKET_A(c2 = c0);
       }
       assert(i < k);
@@ -320,7 +320,7 @@ construct_BWT(const sauchar_t *T, saidx_t *SA,
     }
   }
 
-  return orig - SA;
+  return (saidx_t)(orig - SA);
 }
 
 

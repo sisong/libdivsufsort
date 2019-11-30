@@ -168,7 +168,7 @@ tr_pivot(const saidx_t *ISAd, saidx_t *first, saidx_t *last) {
   saidx_t *middle;
   saidx_t t;
 
-  t = last - first;
+  t = (saidx_t)(last - first);
   middle = first + t / 2;
 
   if(t <= 512) {
@@ -250,9 +250,9 @@ tr_partition(const saidx_t *ISAd,
 
   if(a <= d) {
     c = b - 1;
-    if((s = a - first) > (t = b - a)) { s = t; }
+    if((s = (saidx_t)(a - first)) > (t = (saidx_t)(b - a))) { s = t; }
     for(e = first, f = b - s; 0 < s; --s, ++e, ++f) { SWAP(*e, *f); }
-    if((s = d - c) > (t = last - d - 1)) { s = t; }
+    if((s = (saidx_t)(d - c)) > (t = (saidx_t)(last - d - 1))) { s = t; }
     for(e = b, f = last - s; 0 < s; --s, ++e, ++f) { SWAP(*e, *f); }
     first += (b - a), last -= (d - c);
   }
@@ -269,17 +269,17 @@ tr_copy(saidx_t *ISA, const saidx_t *SA,
   saidx_t *c, *d, *e;
   saidx_t s, v;
 
-  v = b - SA - 1;
+  v = (saidx_t)(b - SA - 1);
   for(c = first, d = a - 1; c <= d; ++c) {
     if((0 <= (s = *c - depth)) && (ISA[s] == v)) {
       *++d = s;
-      ISA[s] = d - SA;
+      ISA[s] = (saidx_t)(d - SA);
     }
   }
   for(c = last - 1, e = d + 1, d = b; e < d; --c) {
     if((0 <= (s = *c - depth)) && (ISA[s] == v)) {
       *--d = s;
-      ISA[s] = d - SA;
+      ISA[s] = (saidx_t)(d - SA);
     }
   }
 }
@@ -293,13 +293,13 @@ tr_partialcopy(saidx_t *ISA, const saidx_t *SA,
   saidx_t s, v;
   saidx_t rank, lastrank, newrank = -1;
 
-  v = b - SA - 1;
+  v = (saidx_t)(b - SA - 1);
   lastrank = -1;
   for(c = first, d = a - 1; c <= d; ++c) {
     if((0 <= (s = *c - depth)) && (ISA[s] == v)) {
       *++d = s;
       rank = ISA[s + depth];
-      if(lastrank != rank) { lastrank = rank; newrank = d - SA; }
+      if(lastrank != rank) { lastrank = rank; newrank = (saidx_t)(d - SA); }
       ISA[s] = newrank;
     }
   }
@@ -307,7 +307,7 @@ tr_partialcopy(saidx_t *ISA, const saidx_t *SA,
   lastrank = -1;
   for(e = d; first <= e; --e) {
     rank = ISA[*e];
-    if(lastrank != rank) { lastrank = rank; newrank = e - SA; }
+    if(lastrank != rank) { lastrank = rank; newrank = (saidx_t)(e - SA); }
     if(newrank != rank) { ISA[*e] = newrank; }
   }
 
@@ -316,7 +316,7 @@ tr_partialcopy(saidx_t *ISA, const saidx_t *SA,
     if((0 <= (s = *c - depth)) && (ISA[s] == v)) {
       *--d = s;
       rank = ISA[s + depth];
-      if(lastrank != rank) { lastrank = rank; newrank = d - SA; }
+      if(lastrank != rank) { lastrank = rank; newrank = (saidx_t)(d - SA); }
       ISA[s] = newrank;
     }
   }
@@ -332,23 +332,23 @@ tr_introsort(saidx_t *ISA, const saidx_t *ISAd,
   saidx_t *a, *b, *c;
   saidx_t t;
   saidx_t v, x = 0;
-  saidx_t incr = ISAd - ISA;
+  saidx_t incr = (saidx_t)(ISAd - ISA);
   saint_t limit, next;
   saint_t ssize, trlink = -1;
 
-  for(ssize = 0, limit = tr_ilg(last - first);;) {
+  for(ssize = 0, limit = tr_ilg((saidx_t)(last - first));;) {
 
     if(limit < 0) {
       if(limit == -1) {
         /* tandem repeat partition */
-        tr_partition(ISAd - incr, first, first, last, &a, &b, last - SA - 1);
+        tr_partition(ISAd - incr, first, first, last, &a, &b, (saidx_t)(last - SA - 1));
 
         /* update ranks */
         if(a < last) {
-          for(c = first, v = a - SA - 1; c < a; ++c) { ISA[*c] = v; }
+          for(c = first, v = (saidx_t)(a - SA - 1); c < a; ++c) { ISA[*c] = v; }
         }
         if(b < last) {
-          for(c = a, v = b - SA - 1; c < b; ++c) { ISA[*c] = v; }
+          for(c = a, v = (saidx_t)(b - SA - 1); c < b; ++c) { ISA[*c] = v; }
         }
 
         /* push */
@@ -359,19 +359,19 @@ tr_introsort(saidx_t *ISA, const saidx_t *ISAd,
         }
         if((a - first) <= (last - b)) {
           if(1 < (a - first)) {
-            STACK_PUSH5(ISAd, b, last, tr_ilg(last - b), trlink);
-            last = a, limit = tr_ilg(a - first);
+            STACK_PUSH5(ISAd, b, last, tr_ilg((saidx_t)(last - b)), trlink);
+            last = a, limit = tr_ilg((saidx_t)(a - first));
           } else if(1 < (last - b)) {
-            first = b, limit = tr_ilg(last - b);
+            first = b, limit = tr_ilg((saidx_t)(last - b));
           } else {
             STACK_POP5(ISAd, first, last, limit, trlink);
           }
         } else {
           if(1 < (last - b)) {
-            STACK_PUSH5(ISAd, first, a, tr_ilg(a - first), trlink);
-            first = b, limit = tr_ilg(last - b);
+            STACK_PUSH5(ISAd, first, a, tr_ilg((saidx_t)(a - first)), trlink);
+            first = b, limit = tr_ilg((saidx_t)(last - b));
           } else if(1 < (a - first)) {
-            last = a, limit = tr_ilg(a - first);
+            last = a, limit = tr_ilg((saidx_t)(a - first));
           } else {
             STACK_POP5(ISAd, first, last, limit, trlink);
           }
@@ -380,26 +380,26 @@ tr_introsort(saidx_t *ISA, const saidx_t *ISAd,
         /* tandem repeat copy */
         a = stack[--ssize].b, b = stack[ssize].c;
         if(stack[ssize].d == 0) {
-          tr_copy(ISA, SA, first, a, b, last, ISAd - ISA);
+          tr_copy(ISA, SA, first, a, b, last, (saidx_t)(ISAd - ISA));
         } else {
           if(0 <= trlink) { stack[trlink].d = -1; }
-          tr_partialcopy(ISA, SA, first, a, b, last, ISAd - ISA);
+          tr_partialcopy(ISA, SA, first, a, b, last, (saidx_t)(ISAd - ISA));
         }
         STACK_POP5(ISAd, first, last, limit, trlink);
       } else {
         /* sorted partition */
         if(0 <= *first) {
           a = first;
-          do { ISA[*a] = a - SA; } while((++a < last) && (0 <= *a));
+          do { ISA[*a] = (saidx_t)(a - SA); } while((++a < last) && (0 <= *a));
           first = a;
         }
         if(first < last) {
           a = first; do { *a = ~*a; } while(*++a < 0);
-          next = (ISA[*a] != ISAd[*a]) ? tr_ilg(a - first + 1) : -1;
-          if(++a < last) { for(b = first, v = a - SA - 1; b < a; ++b) { ISA[*b] = v; } }
+          next = (ISA[*a] != ISAd[*a]) ? tr_ilg((saidx_t)(a - first + 1)) : -1;
+          if(++a < last) { for(b = first, v = (saidx_t)(a - SA - 1); b < a; ++b) { ISA[*b] = v; } }
 
           /* push */
-          if(trbudget_check(budget, a - first)) {
+          if(trbudget_check(budget, (saidx_t)(a - first))) {
             if((a - first) <= (last - a)) {
               STACK_PUSH5(ISAd, a, last, -3, trlink);
               ISAd += incr, last = a, limit = next;
@@ -433,7 +433,7 @@ tr_introsort(saidx_t *ISA, const saidx_t *ISAd,
     }
 
     if(limit-- == 0) {
-      tr_heapsort(ISAd, first, last - first);
+      tr_heapsort(ISAd, first, (saidx_t)(last - first));
       for(a = last - 1; first < a; a = b) {
         for(x = ISAd[*a], b = a - 1; (first <= b) && (ISAd[*b] == x); --b) { *b = ~*b; }
       }
@@ -449,14 +449,14 @@ tr_introsort(saidx_t *ISA, const saidx_t *ISAd,
     /* partition */
     tr_partition(ISAd, first, first + 1, last, &a, &b, v);
     if((last - first) != (b - a)) {
-      next = (ISA[*a] != v) ? tr_ilg(b - a) : -1;
+      next = (ISA[*a] != v) ? tr_ilg((saidx_t)(b - a)) : -1;
 
       /* update ranks */
-      for(c = first, v = a - SA - 1; c < a; ++c) { ISA[*c] = v; }
-      if(b < last) { for(c = a, v = b - SA - 1; c < b; ++c) { ISA[*c] = v; } }
+      for(c = first, v = (saidx_t)(a - SA - 1); c < a; ++c) { ISA[*c] = v; }
+      if(b < last) { for(c = a, v = (saidx_t)(b - SA - 1); c < b; ++c) { ISA[*c] = v; } }
 
       /* push */
-      if((1 < (b - a)) && (trbudget_check(budget, b - a))) {
+      if((1 < (b - a)) && (trbudget_check(budget, (saidx_t)(b - a)))) {
         if((a - first) <= (last - b)) {
           if((last - b) <= (b - a)) {
             if(1 < (a - first)) {
@@ -533,8 +533,8 @@ tr_introsort(saidx_t *ISA, const saidx_t *ISAd,
         }
       }
     } else {
-      if(trbudget_check(budget, last - first)) {
-        limit = tr_ilg(last - first), ISAd += incr;
+      if(trbudget_check(budget, (saidx_t)(last - first))) {
+        limit = tr_ilg((saidx_t)(last - first)), ISAd += incr;
       } else {
         if(0 <= trlink) { stack[trlink].d = -1; }
         STACK_POP5(ISAd, first, last, limit, trlink);
@@ -573,7 +573,7 @@ trsort(saidx_t *ISA, saidx_t *SA, saidx_t n, saidx_t depth) {
           budget.count = 0;
           tr_introsort(ISA, ISAd, SA, first, last, &budget);
           if(budget.count != 0) { unsorted += budget.count; }
-          else { skip = first - last; }
+          else { skip = (saidx_t)(first - last); }
         } else if((last - first) == 1) {
           skip = -1;
         }

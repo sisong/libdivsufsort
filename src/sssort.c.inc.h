@@ -264,7 +264,7 @@ ss_pivot(const sauchar_t *Td, const saidx_t *PA, saidx_t *first, saidx_t *last) 
   saidx_t *middle;
   saidx_t t;
 
-  t = last - first;
+  t = (saidx_t)(last - first);
   middle = first + t / 2;
 
   if(t <= 512) {
@@ -319,7 +319,7 @@ ss_mintrosort(const sauchar_t *T, const saidx_t *PA,
   saint_t limit;
   saint_t v, x = 0;
 
-  for(ssize = 0, limit = ss_ilg(last - first);;) {
+  for(ssize = 0, limit = ss_ilg((saidx_t)(last - first));;) {
 
     if((last - first) <= SS_INSERTIONSORT_THRESHOLD) {
 #if 1 < SS_INSERTIONSORT_THRESHOLD
@@ -330,7 +330,7 @@ ss_mintrosort(const sauchar_t *T, const saidx_t *PA,
     }
 
     Td = T + depth;
-    if(limit-- == 0) { ss_heapsort(Td, PA, first, last - first); }
+    if(limit-- == 0) { ss_heapsort(Td, PA, first, (saidx_t)(last - first)); }
     if(limit < 0) {
       for(a = first + 1, v = Td[PA[*first]]; a < last; ++a) {
         if((x = Td[PA[*a]]) != v) {
@@ -345,16 +345,16 @@ ss_mintrosort(const sauchar_t *T, const saidx_t *PA,
       if((a - first) <= (last - a)) {
         if(1 < (a - first)) {
           STACK_PUSH(a, last, depth, -1);
-          last = a, depth += 1, limit = ss_ilg(a - first);
+          last = a, depth += 1, limit = ss_ilg((saidx_t)(a - first));
         } else {
           first = a, limit = -1;
         }
       } else {
         if(1 < (last - a)) {
-          STACK_PUSH(first, a, depth + 1, ss_ilg(a - first));
+          STACK_PUSH(first, a, depth + 1, ss_ilg((saidx_t)(a - first)));
           first = a, limit = -1;
         } else {
-          last = a, depth += 1, limit = ss_ilg(a - first);
+          last = a, depth += 1, limit = ss_ilg((saidx_t)(a - first));
         }
       }
       continue;
@@ -391,9 +391,9 @@ ss_mintrosort(const sauchar_t *T, const saidx_t *PA,
     if(a <= d) {
       c = b - 1;
 
-      if((s = a - first) > (t = b - a)) { s = t; }
+      if((s = (saidx_t)(a - first)) > (t = (saidx_t)(b - a))) { s = t; }
       for(e = first, f = b - s; 0 < s; --s, ++e, ++f) { SWAP(*e, *f); }
-      if((s = d - c) > (t = last - d - 1)) { s = t; }
+      if((s = (saidx_t)(d - c)) > (t = (saidx_t)(last - d - 1))) { s = t; }
       for(e = b, f = last - s; 0 < s; --s, ++e, ++f) { SWAP(*e, *f); }
 
       a = first + (b - a), c = last - (d - c);
@@ -401,38 +401,38 @@ ss_mintrosort(const sauchar_t *T, const saidx_t *PA,
 
       if((a - first) <= (last - c)) {
         if((last - c) <= (c - b)) {
-          STACK_PUSH(b, c, depth + 1, ss_ilg(c - b));
+          STACK_PUSH(b, c, depth + 1, ss_ilg((saidx_t)(c - b)));
           STACK_PUSH(c, last, depth, limit);
           last = a;
         } else if((a - first) <= (c - b)) {
           STACK_PUSH(c, last, depth, limit);
-          STACK_PUSH(b, c, depth + 1, ss_ilg(c - b));
+          STACK_PUSH(b, c, depth + 1, ss_ilg((saidx_t)(c - b)));
           last = a;
         } else {
           STACK_PUSH(c, last, depth, limit);
           STACK_PUSH(first, a, depth, limit);
-          first = b, last = c, depth += 1, limit = ss_ilg(c - b);
+          first = b, last = c, depth += 1, limit = ss_ilg((saidx_t)(c - b));
         }
       } else {
         if((a - first) <= (c - b)) {
-          STACK_PUSH(b, c, depth + 1, ss_ilg(c - b));
+          STACK_PUSH(b, c, depth + 1, ss_ilg((saidx_t)(c - b)));
           STACK_PUSH(first, a, depth, limit);
           first = c;
         } else if((last - c) <= (c - b)) {
           STACK_PUSH(first, a, depth, limit);
-          STACK_PUSH(b, c, depth + 1, ss_ilg(c - b));
+          STACK_PUSH(b, c, depth + 1, ss_ilg((saidx_t)(c - b)));
           first = c;
         } else {
           STACK_PUSH(first, a, depth, limit);
           STACK_PUSH(c, last, depth, limit);
-          first = b, last = c, depth += 1, limit = ss_ilg(c - b);
+          first = b, last = c, depth += 1, limit = ss_ilg((saidx_t)(c - b));
         }
       }
     } else {
       limit += 1;
       if(Td[PA[*first] - 1] < v) {
         first = ss_partition(PA, first, last, depth);
-        limit = ss_ilg(last - first);
+        limit = ss_ilg((saidx_t)(last - first));
       }
       depth += 1;
     }
@@ -461,7 +461,7 @@ void
 ss_rotate(saidx_t *first, saidx_t *middle, saidx_t *last) {
   saidx_t *a, *b, t;
   saidx_t l, r;
-  l = middle - first, r = last - middle;
+  l = (saidx_t)(middle - first), r = (saidx_t)(last - middle);
   for(; (0 < l) && (0 < r);) {
     if(l == r) { ss_blockswap(first, middle, l); break; }
     if(l < r) {
@@ -511,7 +511,7 @@ ss_inplacemerge(const sauchar_t *T, const saidx_t *PA,
   for(;;) {
     if(*(last - 1) < 0) { x = 1; p = PA + ~*(last - 1); }
     else                { x = 0; p = PA +  *(last - 1); }
-    for(a = first, len = middle - first, half = len >> 1, r = -1;
+    for(a = first, len = (saidx_t)(middle - first), half = len >> 1, r = -1;
         0 < len;
         len = half, half >>= 1) {
       b = a + half;
@@ -550,7 +550,7 @@ ss_mergeforward(const sauchar_t *T, const saidx_t *PA,
   saint_t r;
 
   bufend = buf + (middle - first) - 1;
-  ss_blockswap(buf, first, middle - first);
+  ss_blockswap(buf, first, (saidx_t)(middle - first));
 
   for(t = *(a = first), b = buf, c = middle;;) {
     r = ss_compare(T, PA + *b, PA + *c, depth);
@@ -602,7 +602,7 @@ ss_mergebackward(const sauchar_t *T, const saidx_t *PA,
   saint_t x;
 
   bufend = buf + (last - middle) - 1;
-  ss_blockswap(buf, middle, last - middle);
+  ss_blockswap(buf, middle, (saidx_t)(last - middle));
 
   x = 0;
   if(*bufend < 0)       { p1 = PA + ~*bufend; x |= 1; }
@@ -691,7 +691,7 @@ ss_swapmerge(const sauchar_t *T, const saidx_t *PA,
       continue;
     }
 
-    for(m = 0, len = MIN(middle - first, last - middle), half = len >> 1;
+    for(m = 0, len = (saidx_t)(MIN(middle - first, last - middle)), half = len >> 1;
         0 < len;
         len = half, half >>= 1) {
       if(ss_compare(T, PA + GETIDX(*(middle + m + half)),
@@ -762,7 +762,7 @@ sssort(const sauchar_t *T, const saidx_t *PA,
 #else
   if((bufsize < SS_BLOCKSIZE) &&
       (bufsize < (last - first)) &&
-      (bufsize < (limit = ss_isqrt(last - first)))) {
+      (bufsize < (limit = ss_isqrt((saidx_t)(last - first))))) {
     if(SS_BLOCKSIZE < limit) { limit = SS_BLOCKSIZE; }
     buf = middle = last - limit, bufsize = limit;
   } else {
@@ -774,7 +774,7 @@ sssort(const sauchar_t *T, const saidx_t *PA,
 #elif 1 < SS_BLOCKSIZE
     ss_insertionsort(T, PA, a, a + SS_BLOCKSIZE, depth);
 #endif
-    curbufsize = last - (a + SS_BLOCKSIZE);
+    curbufsize = (saidx_t)(last - (a + SS_BLOCKSIZE));
     curbuf = a + SS_BLOCKSIZE;
     if(curbufsize <= bufsize) { curbufsize = bufsize, curbuf = buf; }
     for(b = a, k = SS_BLOCKSIZE, j = i; j & 1; b -= k, k <<= 1, j >>= 1) {
